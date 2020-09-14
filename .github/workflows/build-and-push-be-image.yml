@@ -1,0 +1,44 @@
+on:
+  push:
+    branches:
+      - master
+
+name: Build and push be image to github packages and docker hub
+
+jobs:
+  build:
+    name: Build and push be image to github packages and docker hub
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ${{ github.repository }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Pull latest images
+        run: |
+          docker pull $IMAGE_NAME:latest || true
+      - name: Build the Docker image
+        run: |
+          docker build \
+            --cache-from $IMAGE_NAME:latest \
+            --tag $IMAGE_NAME:latest \
+            --tag docker.pkg.github.com/$IMAGE_NAME/tiktok-signature:latest \
+            .
+      - name: Login to hubs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKERHUB_ACTOR: ${{ secrets.DOCKERHUB_ACTOR }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          docker login docker.pkg.github.com -u $GITHUB_ACTOR    -p $GITHUB_TOKEN
+          docker login                       -u $DOCKERHUB_ACTOR -p $DOCKERHUB_TOKEN
+      - name: Push image to hubs
+        run: |
+          docker push $IMAGE_NAME:latest
+          docker push docker.pkg.github.com/$IMAGE_NAME/tiktok-signature:latest
+      - name: Logout
+        run: |
+          docker logout docker.pkg.github.com
+          docker logout
