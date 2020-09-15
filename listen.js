@@ -14,12 +14,12 @@ const http = require("http");
 
     // Uncomment if you want to auto-exit this application after a period of time
     // If you use PM2 or Supervisord, it will attempt to open it ( in this way tac token will be refreshed)
-    // setTimeout(function () {
-    //   server.close(() => {
-    //     console.log("Server shutdown completed.");
-    //     process.exit(1);
-    //   });
-    // }, 1 * 60 * 60 * 1000);
+    setTimeout(function () {
+      server.close(() => {
+        console.log("Server shutdown completed.");
+        process.exit(1);
+      });
+    }, 1 * 60 * 60 * 1000);
 
     signer.init(); // !?
 
