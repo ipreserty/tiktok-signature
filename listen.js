@@ -3,7 +3,7 @@ const http = require("http");
 
 (async function main() {
   try {
-    const signer = new Signer();
+    var signer = new Signer();
 
     const server = http
       .createServer()
@@ -27,10 +27,10 @@ const http = require("http");
       response.setHeader('Access-Control-Allow-Origin', '*');
       response.setHeader('Access-Control-Allow-Headers', '*');
 
-      if (request.method === 'OPTIONS' ) {
-          response.writeHead(200);
-          response.end();
-          return;
+      if (request.method === 'OPTIONS') {
+        response.writeHead(200);
+        response.end();
+        return;
       }
 
       if (request.method === "POST" && request.url === "/signature") {
@@ -51,7 +51,38 @@ const http = require("http");
               verifyFp: verifyFp,
               cookies: cookies
             });
-            response.writeHead(200, { "Content-Type": "application/json" });
+            response.writeHead(200, {
+              "Content-Type": "application/json"
+            });
+            response.end(output);
+            console.log("Sent result: " + output);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      } else if (request.method === "POST" && request.url === "/useragent") {
+        var userAgent = "";
+        request.on("data", function (chunk) {
+          userAgent += chunk;
+        });
+
+        request.on("end", async function () {
+          console.log("Received user-agent: " + userAgent);
+
+          try {
+            // close old signer
+            await signer.close();
+
+            // create new one with received user-agent
+            signer = new Signer(userAgent);
+            await signer.init();
+
+            let output = JSON.stringify({
+              userAgent: userAgent,
+            });
+            response.writeHead(200, {
+              "Content-Type": "application/json"
+            });
             response.end(output);
             console.log("Sent result: " + output);
           } catch (err) {
