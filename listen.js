@@ -47,6 +47,7 @@ const http = require("http");
             const token = await signer.sign(url);
             const cookies = await signer.getCookies();
             let output = JSON.stringify({
+              userAgent: signer.userAgent,
               signature: token,
               verifyFp: verifyFp,
               cookies: cookies
