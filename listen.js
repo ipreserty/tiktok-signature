@@ -1,5 +1,6 @@
 const Signer = require("./index");
 const http = require("http");
+const randomUseragent = require("random-useragent");
 
 (async function main() {
   try {
@@ -61,15 +62,16 @@ const http = require("http");
             console.log(err);
           }
         });
-      } else if (request.method === "POST" && request.url === "/useragent") {
+      } else if (request.url === "/useragent") {
         var userAgent = "";
+
         request.on("data", function (chunk) {
           userAgent += chunk;
         });
 
         request.on("end", async function () {
-          console.log("Received user-agent: " + userAgent);
-
+          userAgent = userAgent || randomUseragent.getRandom();
+          console.log("New user-agent: " + userAgent);
           try {
             // close old signer
             await signer.close();
