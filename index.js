@@ -13,7 +13,7 @@ class Signer {
     "--ignore-certifcate-errors-spki-list",
   ];
 
-  constructor(userAgent, tac, browser) {
+  constructor(userAgent, tac, browser, proxy=null) {
     if (userAgent) {
       this.userAgent = userAgent;
     }
@@ -35,6 +35,12 @@ class Signer {
       headless: true,
       ignoreHTTPSErrors: true,
     };
+    if (proxy !== null) {
+      console.log(`Add proxy url "${proxy}"`);
+      this.options["proxy"] = {
+        server: proxy,
+      };
+    }
   }
 
   async init() {

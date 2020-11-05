@@ -4,7 +4,8 @@ const randomUseragent = require("random-useragent");
 
 (async function main() {
   try {
-    var signer = new Signer();
+    var proxy = process.env.PROXY_URL;
+    var signer = new Signer(proxy=proxy);
 
     const server = http
       .createServer()
@@ -77,7 +78,7 @@ const randomUseragent = require("random-useragent");
             await signer.close();
 
             // create new one with received user-agent
-            signer = new Signer(userAgent);
+            signer = new Signer(userAgent, proxy=proxy);
             await signer.init();
 
             let output = JSON.stringify({
