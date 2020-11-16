@@ -13,7 +13,7 @@ class Signer {
     "--ignore-certifcate-errors-spki-list",
   ];
 
-  constructor(userAgent, tac, browser, proxy=null) {
+  constructor(userAgent, tac, browser, proxy, proxyUser, proxyPass) {
     if (userAgent) {
       this.userAgent = userAgent;
     }
@@ -40,6 +40,11 @@ class Signer {
       this.options["proxy"] = {
         server: proxy,
       };
+
+      if (proxyUser && proxyPass) {
+        this.options["proxy"]["username"] = proxyUser;
+        this.options["proxy"]["password"] = proxyPass;
+      }
     }
   }
 

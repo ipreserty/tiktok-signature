@@ -5,7 +5,9 @@ const randomUseragent = require("random-useragent");
 (async function main() {
   try {
     var proxy = process.env.PROXY;
-    var signer = new Signer(null, null, null, proxy);
+    var proxyUser = process.env.PROXY_USER;
+    var proxyPass = process.env.PROXY_PASS;
+    var signer = new Signer(null, null, null, proxy, proxyUser, proxyPass);
 
     const server = http
       .createServer()
