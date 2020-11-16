@@ -23,7 +23,7 @@ const randomUseragent = require("random-useragent");
         console.log("Server shutdown completed.");
         process.exit(1);
       });
-    }, 1 * 60 * 60 * 1000);
+    }, 20 * 60 * 1000);
 
     signer.init(); // !?
 
