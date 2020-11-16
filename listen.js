@@ -51,6 +51,9 @@ const randomUseragent = require("random-useragent");
             const token = await signer.sign(url);
             const cookies = await signer.getCookies();
             let output = JSON.stringify({
+              proxy: proxy,
+              proxyUser: proxyUser,
+              proxyPass: proxyPass,
               userAgent: signer.userAgent,
               signature: token,
               verifyFp: verifyFp,
