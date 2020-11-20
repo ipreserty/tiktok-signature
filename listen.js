@@ -4,7 +4,7 @@ const randomUseragent = require("random-useragent");
 
 (async function main() {
   try {
-    var proxy = process.env.PROXY;
+    var proxy = process.env.PROXY || null;
     var proxyUser = process.env.PROXY_USER;
     var proxyPass = process.env.PROXY_PASS;
     var signer = new Signer(null, null, null, proxy, proxyUser, proxyPass);
