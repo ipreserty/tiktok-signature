@@ -36,17 +36,24 @@ const http = require("http");
           try {
             const verifyFp = await signer.getVerifyFp();
             const token = await signer.sign(url);
+
             const cookies = await signer.getCookies();
             let output = JSON.stringify({
               signature: token,
               verifyFp: verifyFp,
-              cookies: cookies
+              cookies: cookies,
+              proxy: process.env.PROXY || null,
+              proxyUser: process.env.PROXY_USER || null,
+              proxyPass: process.env.PROXY_PASS|| null,
+              userAgent: signer.userAgent,
             });
             response.writeHead(200, { "Content-Type": "application/json" });
             response.end(output);
             console.log("Sent result: " + output);
           } catch (err) {
             console.log(err);
+            response.statusCode = 500;
+            response.end();
           }
         });
       } else {
