@@ -8,9 +8,14 @@ class Signer {
     "--no-sandbox",
     "--disable-setuid-sandbox",
     "--disable-infobars",
+    "--disable-accelerated-2d-canvas",
+    '--no-first-run',
+    "--no-zygote",
+    "--single-process",
+    "--disable-gpu",
     "--window-position=0,0",
-    "--ignore-certifcate-errors",
-    "--ignore-certifcate-errors-spki-list",
+    "--ignore-certificate-errors",
+    "--ignore-certificate-errors-spki-list",
   ];
 
   constructor(userAgent, tac, browser, proxy, proxyUser, proxyPass) {
